@@ -34,7 +34,7 @@ function ArcGISMapObjectProvider({ children }) {
   const [view, setView] = useState(null);
   const [pointGraphicLayer] = useState(new GraphicsLayer());
   const [polyLineGraphicLayer] = useState(new GraphicsLayer());
-  const [idArrayOfDrawnThreats, setIdArrayOfDrawnThreats] = useState([]);
+  const idArrayOfDrawnThreats = useRef([]);
   const [sketchGraphicLayer, setSketchGraphicLayer] = useState(
     new GraphicsLayer()
   );
@@ -42,8 +42,6 @@ function ArcGISMapObjectProvider({ children }) {
   //   center: [-112, 38],
   //   zoom: 12,
   // });
-
-  console.log("after");
 
   const getCity = useCallback(async function (lat, long) {
     lat = Number(lat);
@@ -130,41 +128,34 @@ function ArcGISMapObjectProvider({ children }) {
           wkid: 4326, // Set the desired spatial reference using the well-known ID (WKID)
         },
       });
+      var symbolCircle = {
+        type: "simple-marker",
+        style: "path",
+        path: "m 817.11249,282.97118 c -1.25816,1.34277 -2.04623,3.29881 -2.01563,5.13867 0.0639,3.84476 1.79693,5.3002 4.56836,10.59179 0.99832,2.32851 2.04027,4.79237 3.03125,8.87305 0.13772,0.60193 0.27203,1.16104 0.33416,1.20948 0.0621,0.0485 0.19644,-0.51262 0.33416,-1.11455 0.99098,-4.08068 2.03293,-6.54258 3.03125,-8.87109 2.77143,-5.29159 4.50444,-6.74704 4.56836,-10.5918 0.0306,-1.83986 -0.75942,-3.79785 -2.01758,-5.14062 -1.43724,-1.53389 -3.60504,-2.66908 -5.91619,-2.71655 -2.31115,-0.0475 -4.4809,1.08773 -5.91814,2.62162 z", // Set the SVG path data here
+        size: 17.5, // Adjust the size as needed
+        color: "red", // Set the color
+        outline: {
+          // autocasts as new SimpleLineSymbol()
+          color: null,
+          width: 0, // points
+        },
+      };
+
+      if (!idArrayOfDrawnThreats.current.includes(spot.threatId)) {
+        symbolCircle.outline.color = "green";
+        symbolCircle.outline.width = 2;
+        idArrayOfDrawnThreats.current = [
+          ...idArrayOfDrawnThreats.current,
+          spot.threatId,
+        ];
+      }
+      console.log(idArrayOfDrawnThreats);
+
+      const imageMediaInfoValue = new ImageMediaInfoValue({
+        sourceURL: spot.image,
+      });
 
       getCity(spot.location.lat, spot.location.long).then((data) => {
-        var symbolCircle = {
-          type: "simple-marker",
-          style: "path",
-          path: "m 817.11249,282.97118 c -1.25816,1.34277 -2.04623,3.29881 -2.01563,5.13867 0.0639,3.84476 1.79693,5.3002 4.56836,10.59179 0.99832,2.32851 2.04027,4.79237 3.03125,8.87305 0.13772,0.60193 0.27203,1.16104 0.33416,1.20948 0.0621,0.0485 0.19644,-0.51262 0.33416,-1.11455 0.99098,-4.08068 2.03293,-6.54258 3.03125,-8.87109 2.77143,-5.29159 4.50444,-6.74704 4.56836,-10.5918 0.0306,-1.83986 -0.75942,-3.79785 -2.01758,-5.14062 -1.43724,-1.53389 -3.60504,-2.66908 -5.91619,-2.71655 -2.31115,-0.0475 -4.4809,1.08773 -5.91814,2.62162 z", // Set the SVG path data here
-          size: 17.5, // Adjust the size as needed
-          color: "red", // Set the color
-          outline: {
-            // autocasts as new SimpleLineSymbol()
-            color: null,
-            width: 0, // points
-          },
-        };
-        // var draw = true;
-        // idArrayOfDrawnThreats.map((val) => {
-        //   if (val === spot.threatId) {
-        //     draw = false;
-        //   }
-        //   return null;
-        // });
-        // if (draw) {
-        //   setIdArrayOfDrawnThreats((s) => [...s, spot.threatId]);
-        // }
-        // console.log(idArrayOfDrawnThreats);
-
-        // const loger = {
-        //   title: "loger",
-        //   id: "measure-this",
-        //   image: "Measure_Distance16.png",
-        // };
-        const imageMediaInfoValue = new ImageMediaInfoValue({
-          sourceURL: spot.image,
-        });
-
         // Create the ImageMediaInfo
         const imageElement = new ImageMediaInfo({
           title: `Threat ID-: ${spot.threatId}`,
