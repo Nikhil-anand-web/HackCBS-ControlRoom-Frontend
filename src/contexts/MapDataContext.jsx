@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { io } from "socket.io-client";
 import data from "../../data/data";
 
@@ -6,6 +12,14 @@ const MapDataContext = createContext();
 
 function MapDataProvider({ children }) {
   const [stat, setStat] = useState(data());
+
+  const RandomColorGenerator = useCallback(() => {
+    var randomColor;
+
+    randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`; // Generate a random hexadecimal color
+
+    return randomColor;
+  }, []);
 
   var trailState = {};
   stat.map((obj) => {
@@ -19,15 +33,16 @@ function MapDataProvider({ children }) {
               [obj.location.long, obj.location.lat],
             ]
           : [[obj.location.long, obj.location.lat]],
+        color: RandomColorGenerator(),
       },
     };
     return null;
   });
-
+  console.log(trailState);
   useEffect(() => {
     const sessionData = sessionStorage;
     console.log(sessionData.getItem("user_id"));
-    const socket = io("https://qhp6cf8t-8000.inc1.devtunnels.ms/", {
+    const socket = io("http://127.0.0.1:8000/", {
       withCredentials: true,
       debug: true,
       reconnection: true,
@@ -37,18 +52,26 @@ function MapDataProvider({ children }) {
     socket.on("connect", () => {
       console.log(socket.id);
     });
-    socket.on("reply", (response) => {
+    socket.on("frame_processed_controller", (response) => {
       response = JSON.parse(response);
-
-      setStat((pre) => [...pre, { ...response,image:"data:image/jpeg;base64,"+response.image }]);
+      console.log(response);
+      setStat((pre) => [
+        ...pre,
+        { ...response, image: "data:image/jpeg;base64," + response.image },
+      ]);
     });
 
-    socket.emit("msg", "Hello, server!"); // Send a message to the server
+    socket.on("connected", (response) => {
+      console.log(response);
+    });
 
-    return () => {
-      socket.disconnect(); // Disconnect when the component unmounts
+    socket.emit("connect_control_room", "Hello, server!");
+
+    window.onbeforeunload = function () {
+      socket.emit("disconnect");
     };
   }, []);
+
   console.log();
 
   return (
