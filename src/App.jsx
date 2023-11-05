@@ -1,24 +1,28 @@
 import "./App.css";
 
 import MapViewer from "../src/components/MapViewer";
-import SideDisplay from "./components/Utilities/SideDisplay";
-import Navbar from "./components/common/Navbar";
-import Sidebar from "./components/common/ScreenshotButton";
-import ScreenshotButton from "./components/common/ScreenshotButton";
+import { Routes, Route } from "react-router-dom";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <MapViewer
-        style={{
-          height: "100vh",
-          position: "absolute",
-          width: "100%",
-          zIndex: "0",
-        }}
-      />
-      <ScreenshotButton />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MapViewer
+              style={{
+                height: "100vh",
+                position: "absolute",
+                width: "100%",
+                zIndex: "0",
+              }}
+            />
+          }
+        />
+        <Route path="/aboutus" element={<AboutUs />} />
+      </Routes>
 
       {/* <SideDisplay /> */}
     </div>

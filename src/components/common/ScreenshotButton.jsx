@@ -17,16 +17,19 @@ const ScreenshotButton = () => {
   return (
     <div className="sidebar">
       {!sidebarOpen ? (
-        <div className="sidebar_icon" onClick={handleSidebarOpen}>
+        <div className="sidebar_icon rounded" onClick={handleSidebarOpen}>
           <FontAwesomeIcon icon={faCamera} />
         </div>
       ) : (
         <>
-          <div className="sidebar_icon" onClick={handleSidebarClose}>
+          <div
+            className="sidebar_icon rounded mb-1"
+            onClick={handleSidebarClose}
+          >
             <FontAwesomeIcon icon={faXmark} />
           </div>
-          <div className="sidebar_items">
-            <div className="sidebar_item">
+          <div className="sidebar_items rounded">
+            <div className="pl-4 pt-3 sidebar_item">
               <FontAwesomeIcon className="mr-2" icon={faCamera} />
               <p>Take Screenshot</p>
             </div>
