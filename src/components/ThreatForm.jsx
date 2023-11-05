@@ -25,10 +25,11 @@ function UploadForm() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("id", id);
-    formData.append("photo", photo);
+    formData.append("image", photo);
 
     // Send the data to the server using fetch or an HTTP library of your choice
-    fetch("YOUR_SERVER_ENDPOINT", {
+    const uid = sessionStorage.getItem("user_id");
+    fetch(`http://127.0.0.1:8000/create_user?user_id=${uid}`, {
       method: "POST",
       body: formData,
     })

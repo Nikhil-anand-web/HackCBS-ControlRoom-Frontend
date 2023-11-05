@@ -5,6 +5,7 @@ import SideDisplay from "./components/Utilities/SideDisplay";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./googleSignin/signIn";
 import { useState } from "react";
+import UploadForm from "./components/ThreatForm";
 
 function PrivateRoute({ children }) {
   return sessionStorage.getItem("user_id") ? children : <Navigate to="/" />;
@@ -26,6 +27,14 @@ function App() {
                   zIndex: "0",
                 }}
               />{" "}
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path="/create"
+          element={
+            <PrivateRoute>
+              <UploadForm />{" "}
             </PrivateRoute>
           }
         ></Route>
