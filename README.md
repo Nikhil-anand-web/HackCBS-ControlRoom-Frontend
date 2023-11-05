@@ -23,9 +23,7 @@ Our application provides a user-friendly interface for central security agencies
 
 
 
-
-
-## [Project Presentation](https://docs.google.com/presentation/d/1ipp3PO5gEAzizwAx4vRF2mYU2zaA_3PV/edit?usp=sharing)
+## Project Presentation - https://docs.google.com/presentation/d/1ipp3PO5gEAzizwAx4vRF2mYU2zaA_3PV/edit?usp=sharing
 
 For more detailed information about our project, including its goals, technical details, and potential impact, please refer to our project presentation linked above.
 
