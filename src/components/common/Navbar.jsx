@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ logout }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const handleSidebarOpen = () => {
     setSidebarOpen(true);
@@ -16,8 +16,8 @@ const Navbar = () => {
   };
   return (
     <nav
-      style={{ backgroundColor: "#011222" }}
-      className="w-full z-10 relative h-20 flex items-center justify-between shadow-lg"
+      style={{ backgroundColor: "#011222", height: "4rem" }}
+      className="w-full z-10 absolute  flex items-center justify-between shadow-lg"
     >
       <div className="sidebar_icon pb-2">
         {!sidebarOpen ? (
@@ -49,14 +49,16 @@ const Navbar = () => {
                 className="absolute top-20 sidebar_item "
               >
                 <ul className="flex flex-col space-y-4 p-5">
-                  <Link to="/">
+                  <Link to="/maps">
                     <li className="">Home </li>
                   </Link>
                   <Link to="/AboutUs">
                     <li className="">About Us</li>
                   </Link>
 
-                  <li className="">Logout</li>
+                  <li onClick={logout} className="">
+                    Logout
+                  </li>
                 </ul>
               </div>
             </div>

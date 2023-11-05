@@ -1,19 +1,18 @@
 import "./App.css";
 
 import MapViewer from "../src/components/MapViewer";
-import SideDisplay from "./components/Utilities/SideDisplay";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./googleSignin/signIn";
-import { useState } from "react";
 import UploadForm from "./components/ThreatForm";
-
+import AboutUs from "./Pages/AboutUs";
+import UserList from "./components/UserListView";
 function PrivateRoute({ children }) {
   return sessionStorage.getItem("user_id") ? children : <Navigate to="/" />;
 }
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen">
       <Routes>
         <Route
           path="/maps"
@@ -21,10 +20,11 @@ function App() {
             <PrivateRoute>
               <MapViewer
                 style={{
-                  height: "100vh",
+                  height: "92vh",
                   position: "absolute",
                   width: "100%",
                   zIndex: "0",
+                  top: "8vh",
                 }}
               />{" "}
             </PrivateRoute>
@@ -38,6 +38,8 @@ function App() {
             </PrivateRoute>
           }
         ></Route>
+        <Route path="/AboutUs" element={<AboutUs />}></Route>
+        <Route path="/user" element={<UserList/>}></Route>
 
         <Route path="/" element={<SignIn />}></Route>
       </Routes>

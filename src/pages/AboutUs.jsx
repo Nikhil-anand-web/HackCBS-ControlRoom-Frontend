@@ -32,12 +32,12 @@ const AboutUs = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar style={{ marginTop: "8vh" }} />
       <div
         style={{ backgroundColor: "#011222", color: "#a0dbe6" }}
         className="w-full flex flex-col items-center justify-center pt-10"
       >
-        <div className="w-11/12 flex flex-col items-center justify-center">
+        <div className="w-11/12 mt-10 flex flex-col items-center justify-center">
           {/* heading div */}
           <div className="text-center w-11/12 font-serif h-auto text-6xl font-extrabold overflow-hidden">
             Meet The Developers
