@@ -15,13 +15,13 @@ import Expand from "@arcgis/core/widgets/Expand.js";
 import Sketch from "@arcgis/core/widgets/Sketch.js";
 import BasemapGallery from "@arcgis/core/widgets/BasemapGallery.js";
 
-
+import Polyline from "@arcgis/core/geometry/Polyline.js";
 
 import { useSocketData } from "./MapDataContext";
 
+import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol.js";
 
-
-
+import data from "../../data/data";
 
 const ArcGISMapObjectContext = createContext();
 
@@ -34,21 +34,21 @@ function ArcGISMapObjectProvider({ children }) {
   const [view, setView] = useState(null);
   const [pointGraphicLayer] = useState(new GraphicsLayer());
   const [polyLineGraphicLayer] = useState(new GraphicsLayer());
- 
+  const [idArrayOfDrawnThreats, setIdArrayOfDrawnThreats] = useState([]);
   const [sketchGraphicLayer, setSketchGraphicLayer] = useState(
     new GraphicsLayer()
   );
-  view?.goTo({
-    center: [-112, 38],
-    zoom: 12,
-  });
+  // view?.goTo({
+  //   center: [-112, 38],
+  //   zoom: 12,
+  // });
 
   console.log("after");
 
   const getCity = useCallback(async function (lat, long) {
     lat = Number(lat);
     long = Number(long);
-
+    console.log(lat, long);
     const res = await fetch(
       `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${long}&apiKey=f7a0c545c48f45508a59183d230e6a0c`
     );
@@ -85,7 +85,7 @@ function ArcGISMapObjectProvider({ children }) {
     );
   }, []);
   useEffect(() => {
-    for (const [ value] of Object.entries(trailState)) {
+    for (const [key, value] of Object.entries(trailState)) {
       var polylineGraphic = new Graphic();
       var polyline = {
         type: "polyline", // autocasts as Polyline
